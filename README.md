@@ -39,3 +39,9 @@ git update-index --assume-unchanged 文件名
 '''
 git update-index --no-assume-unchanged 文件名
 '''
+
+
+强制更新呢table
+'''
+python manage.py migrate --fake compositions zero
+'''
