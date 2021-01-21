@@ -129,15 +129,24 @@ def update_fina_indicators(code):
             df.to_csv(file_path, index=False, encoding='UTF-8')
 
 
-def fun_compony(items):
+def fun_company(items):
     for index, code in enumerate(items):
         time.sleep(1)
         print("company code:", code)
         update_fina_indicators(code)
         break
 
+def save_fina_indicator_to_db(items):
+    for index, code in enumerate(items):
+        print("company code:", code)
+        file_path = indicator_path + code + '.csv'
+        if os.path.exists(file_path):
+            df = pd.read_csv(file_path)
+            save_to_db(df)
 
 if __name__ == '__main__':
     pro = ts.pro_api(token='e546fbc7cc7180006cd08d7dbde0e07f95b21293a924325e89ca504b')
     companies = load_companies(stock_basics_path)
-    fun_compony(companies)
+    fun_company(companies)
+
+    # save_fina_indicator_to_db(companies)

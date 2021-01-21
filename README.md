@@ -25,6 +25,8 @@ python3 manage.py migrate
 
 python3 manage.py createsuperuser
 
+jupyter-notebook -> tushare_data/sqlCtrl.ipynb
+
 sh daily_shell.sh
 
 '''
