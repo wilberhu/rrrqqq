@@ -19,7 +19,7 @@ create database stock_api default character set utf8mb4 collate utf8mb4_unicode_
 '''
 
 '''
-python3 manage.py makemigrations companies compositions dailies datasets todays strategies
+python3 manage.py makemigrations tushare compositions datasets strategies
 
 python3 manage.py migrate
 

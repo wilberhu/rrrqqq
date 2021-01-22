@@ -1,4 +1,4 @@
-CREATE TABLE `hist_data` (
+CREATE TABLE `tush_hist_data` (
   `ts_code` varchar(255) NOT NULL,
   `trade_date` datetime(6) NOT NULL,
   `open` float(10) NULL,
