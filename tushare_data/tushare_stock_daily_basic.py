@@ -6,13 +6,13 @@ import sys
 sys.path.insert(0, os.path.abspath('.'))
 
 from tushare_data.get_today import get_today
-from tushare_data.df2sql import df2sql
+from tushare_data.df2sql import df2sql, truncate_table
 
 trade_date = get_today()
 
 pro = ts.pro_api(token='e546fbc7cc7180006cd08d7dbde0e07f95b21293a924325e89ca504b')
 
-daily_info_path = 'tushare_data/data/daily_basic/'
+daily_info_path = 'tushare_data/data/tush_stock_daily_basic/'
 
 # 实时行情
 def save_daily_basic():
@@ -23,8 +23,8 @@ def save_daily_basic():
     df = pro.daily_basic(ts_code='', trade_date=trade_date, fields=fields)
 
     #save
-    df.to_csv(daily_info_path + trade_date + "_daily_basic.csv", index=False)
-    df.to_csv(daily_info_path + "daily_basic.csv", index=False)
+    df.to_csv(daily_info_path + trade_date + "_company_dailybasic.csv", index=False)
+    df.to_csv(daily_info_path + "company_dailybasic.csv", index=False)
 
 # 大盘指数行情
 def save_index_dailybasic():
@@ -42,17 +42,19 @@ if __name__ == '__main__':
     save_index_dailybasic()
 
     # company
-    path = daily_info_path + "daily_basic.csv"
-    table_name = "tush_companydaily"
+    path = daily_info_path + "company_dailybasic.csv"
+    table_name = "tush_companydailybasic"
     dtype= {'trade_date': str, "ts_code": str}
     df = pd.read_csv(path, dtype=dtype)
     df = df.fillna('')
+    truncate_table(table_name)
     df2sql(df=df, table_name=table_name, dtype=dtype)
 
     # index
     path = daily_info_path + "index_dailybasic.csv"
-    table_name = "tush_indexdaily"
+    table_name = "tush_indexdailybasic"
     dtype= {'trade_date': str, "ts_code": str}
     df = pd.read_csv(path, dtype=dtype)
     df = df.fillna('')
+    truncate_table(table_name)
     df2sql(df=df, table_name=table_name, dtype=dtype)

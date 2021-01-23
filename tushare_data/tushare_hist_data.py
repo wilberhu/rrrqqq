@@ -14,11 +14,11 @@ pro = ts.pro_api(token='e546fbc7cc7180006cd08d7dbde0e07f95b21293a924325e89ca504b
 
 import time
 
-hist_data_path = 'tushare_data/data/hist_data/'
-index_hist_data_path = 'tushare_data/data/index_hist_data/'
+hist_data_path = 'tushare_data/data/tush_hist_data/'
+index_hist_data_path = 'tushare_data/data/tush_index_hist_data/'
 
-stock_basics_path = 'tushare_data/data/stock_basics/stock_basic.csv'
-index_basics_path = 'tushare_data/data/stock_basics/index_basic.csv'
+stock_basics_path = 'tushare_data/data/tush_stock_basic/stock_basic.csv'
+index_basics_path = 'tushare_data/data/tush_stock_basic/index_basic.csv'
 
 
 company_fields = ['ts_code', 'trade_date', 'open', 'high', 'low',

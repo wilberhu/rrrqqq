@@ -6,15 +6,15 @@ import sys
 sys.path.insert(0, os.path.abspath('.'))
 
 from tushare_data.get_today import get_today
-from tushare_data.df2sql import df2sql
+from tushare_data.df2sql import df2sql, truncate_table
 
 trade_date = get_today()
 
 pro = ts.pro_api(token='e546fbc7cc7180006cd08d7dbde0e07f95b21293a924325e89ca504b')
 
-stock_basics_path = 'tushare_data/data/stock_basics/'
+stock_basics_path = 'tushare_data/data/tush_stock_basic/'
 
-def get_stock_basics():
+def get_stock_basic():
     fields = ['ts_code', 'symbol', 'name', 'area', 'industry',
               'fullname', 'enname', 'market', 'exchange', 'curr_type',
               'list_status', 'list_date', 'delist_date', 'is_hs']
@@ -43,7 +43,7 @@ def get_index_basic():
 
 
 if __name__ == '__main__':
-    get_stock_basics()
+    get_stock_basic()
     get_index_basic()
 
     print("~~~~~~~~~~~")
@@ -52,6 +52,7 @@ if __name__ == '__main__':
     dtype = {"base_point": float}
     df = pd.read_csv(path, dtype=dtype)
     df = df.fillna('')
+    truncate_table(table_name)
     df2sql(df=df, table_name=table_name, dtype=dtype)
 
 
@@ -61,6 +62,7 @@ if __name__ == '__main__':
     dtype = {"base_point": float}
     df = pd.read_csv(path, dtype=dtype)
     df = df.fillna('')
+    truncate_table(table_name)
     df2sql(df=df, table_name=table_name, dtype=dtype)
 
 

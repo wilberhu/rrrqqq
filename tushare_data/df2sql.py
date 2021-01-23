@@ -4,6 +4,8 @@ sys.path.insert(0, os.path.abspath('.'))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "stock_api.settings")
 from django.db import connection
 
+temp_sql_path = "tushare_data/data/temp_sql.sql"
+
 def df2sql(df, table_name, dtype=None):
     if dtype is None:
         dtype = {}
@@ -47,11 +49,21 @@ def df2sql(df, table_name, dtype=None):
     sql = "".join(sql_list)
     # print(sql)
 
+    with open(temp_sql_path,"w") as f:
+        f.write(sql)
+        f.close()
+
     #存入数据库
     cursor = connection.cursor()
     cursor.execute(sql)
     cursor.close()
 
+
+def truncate_table(table_name):
+    # 存入数据库
+    cursor = connection.cursor()
+    cursor.execute("truncate table " + table_name + ";")
+    cursor.close()
 
 if __name__ == '__main__':
     dtype = {'ts_code': str}
