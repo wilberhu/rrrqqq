@@ -19,7 +19,7 @@ create database stock_api default character set utf8mb4 collate utf8mb4_unicode_
 '''
 
 '''
-python3 manage.py makemigrations tushare compositions datasets strategies
+python3 manage.py makemigrations tush compositions datasets strategies
 
 python3 manage.py migrate
 
@@ -45,5 +45,5 @@ git update-index --no-assume-unchanged 文件名
 
 强制更新呢table
 '''
-python manage.py migrate --fake compositions zero
+python manage.py migrate --fake tush zero
 '''
