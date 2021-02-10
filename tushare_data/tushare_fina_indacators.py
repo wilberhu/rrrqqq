@@ -15,7 +15,7 @@ engine = create_engine(connect_info) #use sqlalchemy to build link-engine
 
 #indicators路径
 indicator_path=r'tushare_data/data/fina_indicator/'
-stock_basics_path = 'tushare_data/data/stock_basics/stock_basic.csv'
+stock_basics_path = 'tushare_data/data/tush_stock_basic/stock_basic.csv'
 
 fields = ['ts_code', 'ann_date', 'end_date', 'eps', 'dt_eps',
           'total_revenue_ps', 'revenue_ps', 'capital_rese_ps', 'surplus_rese_ps', 'undist_profit_ps',

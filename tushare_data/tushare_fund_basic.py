@@ -47,7 +47,9 @@ if __name__ == '__main__':
     data2 = pd.read_csv(fund_basic_path + "fund_basic_O_I.csv")
     data3 = pd.read_csv(fund_basic_path + "fund_basic_O_D.csv")
     data4 = pd.read_csv(fund_basic_path + "fund_basic_E.csv")
-    df = pd.concat([data1, data2, data3, data4], axis=0, join='outer', ignore_index=True,
+    data5 = pd.read_csv(fund_basic_path + "fund_basic_akshare_add.csv")
+    data6 = pd.read_csv(fund_basic_path + "fund_basic_other_add.csv")
+    df = pd.concat([data1, data2, data3, data4, data5, data6], axis=0, join='outer', ignore_index=True,
            keys=None, levels=None, names=None, verify_integrity=False, copy=True)
     df = df.fillna('')
 
