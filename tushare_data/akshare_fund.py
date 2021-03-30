@@ -86,7 +86,7 @@ def update_fund_list():
     for item in fund_list_akshare_add:
         print(item)
         # 每分钟最多访问该接口10次
-        time.sleep(6)
+        time.sleep(8)
         df = pro.fund_basic(ts_code=item + ".OF", fields=fields)
         df.to_csv(fund_list_tushare_path + "fund_basic_akshare_add.csv", index=False, header=0, mode='a', encoding='UTF-8')
         df.to_csv(fund_list_tushare_path + trade_date + "_fund_basic_akshare_add.csv", index=False, header=0, mode='a', encoding='UTF-8')
@@ -99,7 +99,7 @@ def update_fund_list():
     for item in fund_list_other_add:
         print(item)
         # 每分钟最多访问该接口10次
-        time.sleep(6)
+        time.sleep(8)
         df = pro.fund_basic(ts_code=item + ".OF", fields=fields)
         df.to_csv(fund_list_tushare_path + "fund_basic_other_add.csv", index=False, header=0, mode='a', encoding='UTF-8')
         df.to_csv(fund_list_tushare_path + trade_date + "_fund_basic_other_add.csv", index=False, header=0, mode='a', encoding='UTF-8')

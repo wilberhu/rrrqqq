@@ -14,7 +14,7 @@ connect_info = 'mysql+pymysql://root:87654321@localhost:3306/stock_api?charset=u
 engine = create_engine(connect_info) #use sqlalchemy to build link-engine
 
 #indicators路径
-indicator_path=r'tushare_data/data/fina_indicator/'
+indicator_path=r'tushare_data/data/tush_fina_indicator/'
 stock_basics_path = 'tushare_data/data/tush_stock_basic/stock_basic.csv'
 
 fields = ['ts_code', 'ann_date', 'end_date', 'eps', 'dt_eps',

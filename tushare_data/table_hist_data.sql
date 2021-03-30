@@ -1,6 +1,6 @@
 CREATE TABLE `tush_hist_data` (
   `ts_code` varchar(255) NOT NULL,
-  `trade_date` datetime(6) NOT NULL,
+  `trade_date` datetime NOT NULL,
   `open` float(10) NULL,
   `high` float(10) NULL,
   `low` float(10) NULL,

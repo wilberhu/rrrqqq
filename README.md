@@ -11,7 +11,7 @@ npm install
 '''
 pip install -r requirements.txt
 
-ln -s rrrqqq/tushare_data rrrqqqback
+ln -s rrrqqq/tushare_data rrrqqqback #绝对路径
 '''
 ##sql中运行
 '''

@@ -5,10 +5,8 @@ import sys
 
 sys.path.insert(0, os.path.abspath('.'))
 
-from tushare_data.get_today import get_today
 from tushare_data.df2sql import df2sql, truncate_table
 
-trade_date = get_today()
 
 pro = ts.pro_api(token='e546fbc7cc7180006cd08d7dbde0e07f95b21293a924325e89ca504b')
 
@@ -25,7 +23,7 @@ if __name__ == '__main__':
 
     path = trade_cal_path + "trade_cal.csv"
     table_name = "tush_trade_cal"
-    df = pd.read_csv(path)
+    df = pd.read_csv(path, dtype={'pretrade_date': str})
     df = df.fillna('')
     truncate_table(table_name)
     df2sql(df=df, table_name=table_name)
