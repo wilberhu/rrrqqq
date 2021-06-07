@@ -21,9 +21,9 @@ def get_today():
 
     time_h = int(time_now.strftime("%H"))
     if time_h < 18 or df.iloc[0]['is_open'] == 0:
-        return str(df.iloc[0]['pretrade_date'])
+        return str(df.iloc[0]['pretrade_date'].strftime('%Y%m%d'))
     else:
-        return str(df.iloc[0]['cal_date'])
+        return str(df.iloc[0]['cal_date'].strftime('%Y%m%d'))
 
 
 if __name__ == '__main__':

@@ -8,6 +8,7 @@ import sqlalchemy as sa
 from sqlalchemy import create_engine
 from sqlalchemy.types import CHAR,INT
 from sqlalchemy.orm import sessionmaker
+import codecs
 
 #stock_api表
 connect_info = 'mysql+pymysql://root:87654321@localhost:3306/stock_api?charset=utf8'
@@ -89,7 +90,7 @@ def delete_from_db(df):
     meta = sa.MetaData()
 
     # Map the Inventory table in your database to a SQLAlchemy object
-    fina_indicators = sa.Table('fina_indicators', meta, autoload=True, autoload_with=engine)
+    fina_indicators = sa.Table('tush_fina_indicators', meta, autoload=True, autoload_with=engine)
 
     # Build the WHERE clause of your DELETE statement from rows in the dataframe.
     # Equivalence in T-SQL
@@ -128,12 +129,15 @@ def update_fina_indicators(code):
             df.to_csv(file_path, index=False, encoding='UTF-8')
 
 
-def fun_company(items):
+def fun_company(items, startCode=None):
+    flag = False
     for index, code in enumerate(items):
-        time.sleep(1)
-        print("company code:", code)
-        update_fina_indicators(code)
-        break
+        if code == startCode or startCode is None:
+            flag = True
+        if flag:
+            time.sleep(2)
+            print("company code:", code)
+            update_fina_indicators(code)
 
 def save_fina_indicator_to_db(items):
     for index, code in enumerate(items):

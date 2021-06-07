@@ -5,21 +5,11 @@ import sys
 
 sys.path.insert(0, os.path.abspath('.'))
 
-from tushare_data.get_today import get_today
-from tushare_data.df2sql import df2sql, truncate_table
+from tushare_data.tushare_fund_hist_data import get_fund_list
 
 pro = ts.pro_api(token='e546fbc7cc7180006cd08d7dbde0e07f95b21293a924325e89ca504b')
 
 import time
-
-fund_hist_path = r'tushare_data/data/tush_fund_hist_data/'
-fund_nav_path = r'tushare_data/data/tush_fund_nav_data/'
-
-fund_list_path = r'tushare_data/data/tush_fund_list/'
-fund_list_tushare_path = 'tushare_data/data/tush_fund_basic/'
-fund_list_akshare_path = r'tushare_data/data/aksh_fund_em/'
-
-fund_basic_e_path = r'tushare_data/data/tush_fund_basic/20210122_fund_basic_E.csv'
 
 fund_portfolio_path = 'tushare_data/data/tush_fund_portfolio/'
 
@@ -49,23 +39,25 @@ def update_fund_portfolio(code):
             df.to_csv(file_path, index=False, encoding='UTF-8')
 
 
-def fun_fund_portfolio(items, start=0):
+def fun_fund_portfolio(items, startCode=None):
     try:
-        for index, code in enumerate(items[start:]):
-            start = index
-            time.sleep(1)
-            print(index, " fund code: ", code)
-            update_fund_portfolio(code)
-            if index == 1:
-                return
+        flag = False
+        for index, code in enumerate(items):
+            if code == startCode or startCode is None:
+                flag = True
+            if flag:
+                time.sleep(1)
+                print(index, " fund code: ", code)
+                update_fund_portfolio(code)
     except:
-        time.sleep(180)
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Error")
-        fun_fund_portfolio(items, start)
+        time.sleep(5)
+        fun_fund_portfolio(items, code)
 
 
 if __name__ == '__main__':
-    items = [i.replace('.csv', '') for i in os.listdir(fund_hist_path)]
-    items.sort()
-    fun_fund_portfolio(items)
+
+    fund_list = get_fund_list()
+    fund_list.sort()
+    fun_fund_portfolio(fund_list)
 

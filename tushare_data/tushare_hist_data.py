@@ -73,17 +73,37 @@ def update_index_hist_data(code):
         else:
             df.to_csv(file_path, index=False, encoding='UTF-8')
 
-def fun_company(items):
-    for index, code in enumerate(items):
-        time.sleep(0.8)
-        print("company code:", code)
-        update_hist_data(code)
 
-def fun_index(indexs):
-    for code in indexs:
-        time.sleep(1.2)
-        print("index code:", code)
-        update_index_hist_data(code)
+def fun_company(items, startCode=None):
+    try:
+        flag = False
+        for index, code in enumerate(items):
+            if code == startCode or startCode is None:
+                flag = True
+            if flag:
+                time.sleep(0.8)
+                print(index, " company code: ", code)
+                update_hist_data(code)
+    except:
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Error")
+        time.sleep(5)
+        fun_company(items, code)
+
+
+def fun_index(items, startCode=None):
+    try:
+        flag = False
+        for index, code in enumerate(items):
+            if code == startCode or startCode is None:
+                flag = True
+            if flag:
+                time.sleep(1.2)
+                print(index, " index code: ", code)
+                update_index_hist_data(code)
+    except:
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Error")
+        time.sleep(5)
+        fun_index(items, code)
 
 def save_hist_data_to_db(items):
 

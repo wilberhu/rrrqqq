@@ -117,20 +117,38 @@ def update_fund_nav(code):
             df.to_csv(file_path, index=False, encoding='UTF-8')
 
 
-def fun_fund_daily(items):
-    for index, code in enumerate(items):
-        # 每分钟最多调用250次，内场日线
-        time.sleep(0.3)
-        print(index, " daily fund code: ", code)
-        update_fund_daily(code)
+def fun_fund_daily(items, startCode=None):
+    try:
+        flag = False
+        for index, code in enumerate(items):
+            if code == startCode or startCode is None:
+                flag = True
+            if flag:
+                # 每分钟最多调用250次，内场日线
+                time.sleep(0.3)
+                print(index, " daily fund code: ", code)
+                update_fund_daily(code)
+    except:
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Error")
+        time.sleep(5)
+        fun_fund_daily(items, code)
 
 
-def fun_fund_nav(items):
-    for index, code in enumerate(items):
-        # 每分钟最多调用80次，基金净值
-        time.sleep(0.8)
-        print(index, " nav fund code: ", code)
-        update_fund_nav(code)
+def fun_fund_nav(items, startCode=None):
+    try:
+        flag = False
+        for index, code in enumerate(items):
+            if code == startCode or startCode is None:
+                flag = True
+            if flag:
+                # 每分钟最多调用80次，基金净值
+                time.sleep(0.8)
+                print(index, " nav fund code: ", code)
+                update_fund_nav(code)
+    except:
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Error")
+        time.sleep(5)
+        fun_fund_nav(items, code)
 
 
 if __name__ == '__main__':
