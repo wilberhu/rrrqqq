@@ -1,6 +1,6 @@
 CREATE TABLE tush_fina_indicators (
 	ts_code VARCHAR ( 255 ) NOT NULL,
-	ann_date VARCHAR ( 255 ) NOT NULL,
+	ann_date VARCHAR ( 255 ),
 	end_date VARCHAR ( 255 ) NOT NULL,
 	eps FLOAT ( 20 ),
 	dt_eps FLOAT ( 20 ),
