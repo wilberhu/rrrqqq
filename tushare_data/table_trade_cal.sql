@@ -1,7 +1,7 @@
 CREATE TABLE tush_trade_cal (
     exchange VARCHAR ( 255 ),
 	cal_date date NOT NULL,
-	is_open VARCHAR ( 255 ),
+	is_open int,
 	pretrade_date date,
 	PRIMARY KEY (`cal_date`)
 )

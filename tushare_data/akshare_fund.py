@@ -141,10 +141,10 @@ if __name__ == '__main__':
     save_tush_fund_basic()
 
     save_aksh_fund_em()
-    fund_list_akshare_add, fund_list_other_add = get_more_fund_list()
-
-    file_name = "fund_basic_akshare_add.csv"
-    fun_fund(fund_list_akshare_add)
-
-    file_name = "fund_basic_other_add.csv"
-    fun_fund(fund_list_other_add)
+    # fund_list_akshare_add, fund_list_other_add = get_more_fund_list()
+    #
+    # file_name = "fund_basic_akshare_add.csv"
+    # fun_fund(fund_list_akshare_add)
+    #
+    # file_name = "fund_basic_other_add.csv"
+    # fun_fund(fund_list_other_add)

@@ -6,7 +6,11 @@ import sys
 sys.path.insert(0, os.path.abspath('.'))
 
 from tushare_data.get_today import get_today
-from tushare_data.df2sql import df2sql
+from tushare_data.df2sql import df2sql, truncate_table
+
+from sqlalchemy import create_engine
+connect_info = 'mysql+pymysql://root:87654321@localhost:3306/stock_api?charset=utf8'
+engine = create_engine(connect_info) #use sqlalchemy to build link-engine
 
 trade_date = get_today()
 
@@ -106,13 +110,14 @@ def fun_index(items, startCode=None):
         fun_index(items, code)
 
 def save_hist_data_to_db(items):
-
+    truncate_table(table_name=table_name)
     for index, code in enumerate(items):
         print("company code:", code)
         file_path = hist_data_path + code + '.csv'
         if os.path.exists(file_path):
             df = pd.read_csv(file_path)
-            df2sql(df=df, table_name=table_name, dtype={"amount":float})
+            # df2sql(df=df, table_name=table_name, dtype={"amount":float})
+            df.to_sql(table_name, engine, index=False, if_exists='replace')
 
 if __name__ == '__main__':
     pro = ts.pro_api(token='e546fbc7cc7180006cd08d7dbde0e07f95b21293a924325e89ca504b')

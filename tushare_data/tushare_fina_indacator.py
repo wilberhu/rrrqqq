@@ -1,22 +1,22 @@
 import tushare as ts
 import pandas as pd
 import os
+import sys
 import time
-import datetime
-import pytz
+
+sys.path.insert(0, os.path.abspath('.'))
+from tushare_data.df2sql import truncate_table
 import sqlalchemy as sa
 from sqlalchemy import create_engine
-from sqlalchemy.types import CHAR,INT
-from sqlalchemy.orm import sessionmaker
-import codecs
 
-#stock_api表
 connect_info = 'mysql+pymysql://root:87654321@localhost:3306/stock_api?charset=utf8'
 engine = create_engine(connect_info) #use sqlalchemy to build link-engine
 
 #indicators路径
 indicator_path=r'tushare_data/data/tush_fina_indicator/'
 stock_basics_path = 'tushare_data/data/tush_stock_basic/stock_basic.csv'
+
+table_name='tush_fina_indicators'
 
 fields = ['ts_code', 'ann_date', 'end_date', 'eps', 'dt_eps',
           'total_revenue_ps', 'revenue_ps', 'capital_rese_ps', 'surplus_rese_ps', 'undist_profit_ps',
@@ -54,26 +54,6 @@ fields = ['ts_code', 'ann_date', 'end_date', 'eps', 'dt_eps',
           'q_profit_yoy', 'q_profit_qoq', 'q_netprofit_yoy', 'q_netprofit_qoq', 'equity_yoy',
           'rd_exp', 'update_flag']
 
-# trade_date = '20200430'
-
-time_now = datetime.datetime.now(tz=pytz.timezone('Asia/Shanghai'))
-time_h = int(time_now.strftime("%H"))
-time_w = int(time_now.strftime("%w"))
-if time_h > 17:  # 17点之前
-    if time_w == 6:  # 星期六
-        trade_date = (time_now - datetime.timedelta(days=1)).strftime("%Y%m%d")
-    elif time_w == 0:  # 星期天
-        trade_date = (time_now - datetime.timedelta(days=2)).strftime("%Y%m%d")
-    else:
-        trade_date = (time_now).strftime("%Y%m%d")
-else:  # 17点之后
-    if time_w == 0:  # 星期天
-        trade_date = (time_now - datetime.timedelta(days=2)).strftime("%Y%m%d")
-    elif time_w == 1:  # 星期一
-        trade_date = (time_now - datetime.timedelta(days=3)).strftime("%Y%m%d")
-    else:
-        trade_date = (time_now - datetime.timedelta(days=1)).strftime("%Y%m%d")
-
 
 def load_companies(path):
     df = pd.read_csv(path, dtype=str)
@@ -81,7 +61,7 @@ def load_companies(path):
 
 
 def save_to_db(df):
-    df.to_sql('tush_fina_indicators', engine, index=False, if_exists='append')
+    df.to_sql(table_name, engine, index=False, if_exists='replace')
 
 
 def delete_from_db(df):
@@ -90,7 +70,7 @@ def delete_from_db(df):
     meta = sa.MetaData()
 
     # Map the Inventory table in your database to a SQLAlchemy object
-    fina_indicators = sa.Table('tush_fina_indicators', meta, autoload=True, autoload_with=engine)
+    fina_indicators = sa.Table(table_name, meta, autoload=True, autoload_with=engine)
 
     # Build the WHERE clause of your DELETE statement from rows in the dataframe.
     # Equivalence in T-SQL
@@ -130,22 +110,34 @@ def update_fina_indicators(code):
 
 
 def fun_company(items, startCode=None):
+    try:
+        flag = False
+        for index, code in enumerate(items):
+            if code == startCode or startCode is None:
+                flag = True
+            if flag:
+                time.sleep(2)
+                print(index, " company code: ", code)
+                update_fina_indicators(code)
+    except:
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Error")
+        time.sleep(5)
+        fun_company(items, code)
+
+
+def save_fina_indicator_to_db(items, startCode=None):
+    # truncate_table(table_name='tush_fina_indicators')
     flag = False
     for index, code in enumerate(items):
         if code == startCode or startCode is None:
             flag = True
         if flag:
-            time.sleep(2)
             print("company code:", code)
-            update_fina_indicators(code)
-
-def save_fina_indicator_to_db(items):
-    for index, code in enumerate(items):
-        print("company code:", code)
-        file_path = indicator_path + code + '.csv'
-        if os.path.exists(file_path):
-            df = pd.read_csv(file_path)
-            save_to_db(df)
+            file_path = indicator_path + code + '.csv'
+            if os.path.exists(file_path):
+                time.sleep(1)
+                df = pd.read_csv(file_path)
+                save_to_db(df)
 
 if __name__ == '__main__':
     pro = ts.pro_api(token='e546fbc7cc7180006cd08d7dbde0e07f95b21293a924325e89ca504b')

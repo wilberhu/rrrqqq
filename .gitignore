@@ -1,4 +1,5 @@
 tushare_data/data/
+tushare_data/ptrade_example/
 .vscode/
 tushare_data/.ipynb_checkpoints/
 tushare_data/__pycache__/
